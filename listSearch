@@ -1,0 +1,100 @@
+package javafxapplication13;
+
+import java.util.ArrayList;
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+/**
+ *
+ * @author HP
+ */
+public class listSearch extends Application {
+
+    TextField text;
+    ListView lw1;
+    ComboBox<String> items;
+   
+    HBox hb1;
+    VBox vb1;
+
+    @Override
+    public void start(Stage primaryStage) {
+
+        Employee emp1 = new Employee("Salsabeel", "AlNajjar", "IT", 100);
+        Employee emp2 = new Employee("Salsabeel", "Najjar", "Designer", 101);
+        Employee emp3 = new Employee("lama", "najjar", "Accounting", 102);
+        Employee[] employees = {emp1, emp2, emp3};
+
+        text = new TextField();
+
+        items = new ComboBox<>();
+        lw1 = new ListView<>();
+        items.getItems().addAll("id", "job", "First Name", "Last Name");
+
+        items.setOnAction(e -> {
+            if (items.getSelectionModel().getSelectedIndex() == 0) {
+
+                Search search = SearchFactory.CreateSearch("id");
+                ArrayList<Employee> emp = search.sreachMethod(employees, text.getText());
+                emp.forEach((employee) -> {
+                    lw1.getItems().addAll(employee.firstN, employee.lastN, employee.jobTitle, employee.id);
+
+                });
+
+            } else if (items.getSelectionModel().getSelectedIndex() == 1) {
+
+                Search search = SearchFactory.CreateSearch("job");
+                ArrayList<Employee> emp = search.sreachMethod(employees, text.getText());
+                emp.forEach((employee) -> {
+                    lw1.getItems().addAll(employee.firstN, employee.lastN, employee.jobTitle, employee.id);
+                });
+
+            } else if (items.getSelectionModel().getSelectedIndex() == 2) {
+
+                Search search = SearchFactory.CreateSearch("First Name");
+                ArrayList<Employee> emp = search.sreachMethod(employees, text.getText());
+                emp.forEach((employee) -> {
+                    lw1.getItems().addAll(employee.firstN, employee.lastN, employee.jobTitle, employee.id);
+                   
+                });
+
+            } else if (items.getSelectionModel().getSelectedIndex() == 3) {
+
+                Search search = SearchFactory.CreateSearch("Last Name");
+                ArrayList<Employee> emp = search.sreachMethod(employees, text.getText());
+                emp.forEach((employee) -> {
+                    lw1.getItems().addAll(employee.firstN, employee.lastN, employee.jobTitle, employee.id);
+                 
+                });
+
+            }
+        });
+
+        hb1 = new HBox(text, items);
+       
+
+        vb1 = new VBox(20, hb1, lw1);
+
+        Scene scene = new Scene(vb1, 300, 250);
+
+        primaryStage.setTitle("Hello World!");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+}
